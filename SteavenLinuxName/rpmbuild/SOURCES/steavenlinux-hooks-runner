@@ -1,0 +1,49 @@
+#!/bin/bash
+
+update_os_release() {
+    local os_release_file="/etc/os-release"
+
+    if [[ -f $os_release_file ]]; then
+        echo "Updating /etc/os-release for SteavenLinux..."
+        sed -i 's/^ID=fedora/ID_LIKE=fedora/' "$os_release_file"
+        sed -i 's/^NAME="Fedora Linux"/NAME="SteavenLinux"/' "$os_release_file"
+    else
+        echo "Error: /etc/os-release not found!" >&2
+        exit 1
+    fi
+}
+
+update_lsb_release() {
+    local lsb_release_file="/etc/lsb-release"
+
+    if [[ -f $lsb_release_file ]]; then
+        echo "Updating /etc/lsb-release for SteavenLinux..."
+        # Add your specific updates for lsb-release here
+        # For example, set DISTRIB_ID="SteavenLinux"
+    else
+        echo "Error: /etc/lsb-release not found!" >&2
+        exit 1
+    fi
+}
+
+update_gdm_logo() {
+    echo "Updating GNOME login screen logo..."
+    sed -i "s|archlinux-logo-text-dark.svg|steavenlinux-logo.png|" \
+        /usr/share/glib-2.0/schemas/org.gnome.login-screen.gschema.override
+}
+
+case "$1" in
+    os-release)
+        update_os_release
+        ;;
+    lsb-release)
+        update_lsb_release
+        ;;
+    gdm)
+        update_gdm_logo
+        ;;
+    *)
+        echo "Unknown trigger: $1"
+        exit 1
+        ;;
+esac
