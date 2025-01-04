@@ -1,62 +1,43 @@
 Name:           steavenlinuxname
-Version:        3
+Version:        1.0
 Release:        1%{?dist}
-Summary:        Branding assets and triggers for SteavenLinux
-
+Summary:        SteavenSettings configuration files
 License:        MIT
-URL:            https://github.com/steavenlinux/steavensettings
-Source0:        steavenlinux-hooks-runner
-Source1:        steavenlinux-logo.png
-Source2:        steavenlinux.svg
+URL:            https://github.com/Steavenlinux/SteavenFedora
 
-Requires:       sed
 BuildArch:      noarch
+BuildRequires:  git
 
 %description
 This package provides branding assets and RPM triggers for SteavenLinux.
 
-Triggers:
-- `lsb-release`: Updates `/etc/lsb-release` with SteavenLinux-specific details.
-- `os-release`: Updates `/etc/os-release` with SteavenLinux-specific details.
-- `gdm`: Updates the GNOME login screen logo.
-
 %prep
-# No preparation needed.
-
-%build
-# Nothing to build.
+# Clone the repository
+git clone https://github.com/Steavenlinux/SteavenFedora.git
+cd SteavenFedora/SteavenLinuxName
 
 %install
-# Install the hooks runner script
-install -Dpm0755 %{SOURCE0} %{buildroot}%{_bindir}/steavenlinux-hooks-runner
+# Install DNF triggers
+install -Dm644 %{_builddir}/SteavenFedora/SteavenLinuxName/gdm.trigger "$RPM_BUILD_ROOT/usr/lib/dnf/plugins/gdm.trigger"
+install -Dm644 %{_builddir}/SteavenFedora/SteavenLinuxName/lsb-release.trigger "$RPM_BUILD_ROOT/usr/lib/dnf/plugins/lsb-release.trigger"
+install -Dm644 %{_builddir}/SteavenFedora/SteavenLinuxName/os-release.trigger "$RPM_BUILD_ROOT/usr/lib/dnf/plugins/os-release.trigger"
 
-# Install branding assets
-install -Dpm0644 %{SOURCE1} %{buildroot}%{_datadir}/pixmaps/steavenlinux-logo.png
-install -Dpm0644 %{SOURCE2} %{buildroot}%{_datadir}/icons/steavenlinux.svg
+# Image files
+install -Dm644 %{_builddir}/SteavenFedora/SteavenLinuxName/logo.png "$RPM_BUILD_ROOT/usr/share/pixmaps/logo.png"
+install -Dm644 %{_builddir}/SteavenFedora/SteavenLinuxName/logo.svg "$RPM_BUILD_ROOT/usr/share/icons/logo.svg"
+install -Dm644 %{_builddir}/SteavenFedora/SteavenLinuxName/steavenlinux-logo.png "$RPM_BUILD_ROOT/usr/share/pixmaps/steavenlinux-logo.png"
 
-# Install triggers
-mkdir -p %{buildroot}/usr/lib/rpm/macros.d
-cat <<EOF > %{buildroot}/usr/lib/rpm/macros.d/lsb-release.trigger
-%triggerpostun -- lsb-release
-/usr/bin/steavenlinux-hooks-runner lsb-release
-EOF
-
-cat <<EOF > %{buildroot}/usr/lib/rpm/macros.d/os-release.trigger
-%triggerpostun -- filesystem
-/usr/bin/steavenlinux-hooks-runner os-release
-EOF
-
-cat <<EOF > %{buildroot}/usr/lib/rpm/macros.d/gdm.trigger
-%triggerpostun -- gdm libgdm
-/usr/bin/steavenlinux-hooks-runner gdm
-EOF
+# Executable script
+install -Dm755 %{_builddir}/SteavenFedora/SteavenLinuxName/steavenlinux-hooks-runner "$RPM_BUILD_ROOT/usr/bin/steavenlinux-hooks-runner"
 
 %files
-%license LICENSE
-%{_bindir}/steavenlinux-hooks-runner
-%{_datadir}/pixmaps/steavenlinux-logo.png
-%{_datadir}/icons/steavenlinux.svg
-%{_sysconfdir}/rpm/macros.d/*.trigger
+/usr/lib/dnf/plugins/gdm.trigger
+/usr/lib/dnf/plugins/lsb-release.trigger
+/usr/lib/dnf/plugins/os-release.trigger
+/usr/share/pixmaps/logo.png
+/usr/share/icons/logo.svg
+/usr/share/pixmaps/steavenlinux-logo.png
+/usr/bin/steavenlinux-hooks-runner
 
 %changelog
 %autochangelog
