@@ -7,6 +7,7 @@ update_os_release() {
         echo "Updating /etc/os-release for SteavenLinux..."
         sed -i 's/^ID=fedora/ID_LIKE=fedora/' "$os_release_file"
         sed -i 's/^NAME="Fedora Linux"/NAME="SteavenLinux"/' "$os_release_file"
+        sed -i 's/^LOGO=fedora-logo-icon/LOGO=steavenlinux/' "$os_release_file"
     else
         echo "Error: /etc/os-release not found!" >&2
         exit 1
