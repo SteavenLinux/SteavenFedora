@@ -1,6 +1,6 @@
 Name:           steavenlinuxname
 Version:        1.0
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        SteavenSettings configuration files
 License:        MIT
 URL:            https://github.com/Steavenlinux/SteavenFedora
