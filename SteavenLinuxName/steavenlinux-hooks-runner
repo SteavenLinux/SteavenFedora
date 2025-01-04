@@ -8,8 +8,8 @@ update_os_release() {
         sed -i '/^ID=SteavenLinux/a ID_LIKE=fedora' "$os_release_file"
         sed -i 's/^NAME="Fedora Linux"/NAME="SteavenLinux"/' "$os_release_file"
         sed -i 's/^LOGO=fedora-logo-icon/LOGO=steavenlinux/' "$os_release_file"
-        sed -i 's/^HOME_URL="https://fedoraproject.org/"/HOME_URL="https://https://github.com/SteavenLinux"/' "$os_release_file"
-        sed -i 's/^DOCUMENTATION_URL="https://docs.fedoraproject.org/en-US/fedora/f41/system-administrators-guide/"/DOCUMENTATION_URL="https://github.com/SteavenLinux"/' "$os_release_file"
+        sed -i 's#^HOME_URL="https://fedoraproject.org/"#HOME_URL="https://github.com/SteavenLinux"#' "$os_release_file"
+        sed -i 's#^DOCUMENTATION_URL="https://docs.fedoraproject.org/en-US/fedora/f41/system-administrators-guide/"#DOCUMENTATION_URL="https://github.com/SteavenLinux"#' "$os_release_file"
     else
         echo "Error: /etc/os-release not found!" >&2
         exit 1
