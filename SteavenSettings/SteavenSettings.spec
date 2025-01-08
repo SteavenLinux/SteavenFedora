@@ -1,6 +1,6 @@
 Name:           steavensettings
 Version:        1.0
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        SteavenSettings configuration files
 License:        MIT
 URL:            https://github.com/Steavenlinux/SteavenSettings
